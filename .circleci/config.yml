@@ -33,7 +33,7 @@ jobs:
                 paths:
                     - node_modules
                     - yarn.lock
-            - run: yarn test --ci
+            - run: yarn run test:ci
 workflows:
     version: 2
     deploy:
