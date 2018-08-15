@@ -109,6 +109,7 @@ describe('PathFinder', () => {
           path: [
             1, 1,
             1, 2,
+            1, 3,
           ],
           endElevation: 2,
         },
@@ -135,6 +136,56 @@ describe('PathFinder', () => {
           endElevation: 9,
         },
       )).toBe(false);
+    });
+
+    test('Should be false if current has better dropping', () => {
+      expect(PathFinder.isBetterSubPath(
+        {
+          size: 3,
+          path: [
+            3, 1,
+            4, 1,
+            2, 4,
+          ],
+          endElevation: 5,
+          currentElevation: 15,
+        },
+        {
+          size: 3,
+          path: [
+            1, 1,
+            1, 2,
+            1, 3,
+          ],
+          endElevation: 2,
+          currentElevation: 3,
+        },
+      )).toBe(false);
+    });
+
+    test('Should be true if candidate has better dropping', () => {
+      expect(PathFinder.isBetterSubPath(
+        {
+          size: 3,
+          path: [
+            1, 1,
+            1, 2,
+            1, 3,
+          ],
+          endElevation: 2,
+          currentElevation: 3,
+        },
+        {
+          size: 3,
+          path: [
+            3, 1,
+            4, 1,
+            2, 4,
+          ],
+          endElevation: 5,
+          currentElevation: 15,
+        },
+      )).toBe(true);
     });
   });
 
