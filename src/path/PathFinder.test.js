@@ -266,5 +266,32 @@ describe('PathFinder', () => {
         endElevation: 1,
       });
     });
+
+    test('Should maximize dropping', () => {
+      const map = [
+        8, 7, 6, 5, 4, 1,
+        8, 8, 7, 6, 5, 7,
+        9, 8, 7, 6, 5, 1,
+        8, 8, 7, 6, 5, 7,
+        8, 7, 6, 5, 4, 1,
+      ];
+      const rows = 5;
+      const cols = 6;
+
+      const pathFinder = new PathFinder(map, rows, cols);
+
+      expect(pathFinder.solve()).toEqual({
+        size: 6,
+        path: [
+          2, 0,
+          2, 1,
+          2, 2,
+          2, 3,
+          2, 4,
+          2, 5,
+        ],
+        endElevation: 1,
+      });
+    });
   });
 });
