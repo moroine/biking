@@ -1,6 +1,11 @@
 const PathFinder = require('./PathFinder');
 const Map = require('../model/Map');
 
+const map1 = require('../../fixtures/dataset_01/Map');
+const map2 = require('../../fixtures/dataset_02/Map');
+const map3 = require('../../fixtures/dataset_03/Map');
+const mapExample = require('../../fixtures/example/Map');
+
 describe('PathFinder', () => {
   describe('constructor', () => {
     test('Should set map', () => {
@@ -159,16 +164,8 @@ describe('PathFinder', () => {
   });
 
   describe('.solveFromStartPoint', () => {
-    test('Should returns size 1 for 1x1 data', () => {
-      const map = new Map(
-        [
-          5,
-        ],
-        1,
-        1,
-      );
-
-      const pathFinder = new PathFinder(map);
+    test('Should returns size 1 for map1 at (0, 0)', () => {
+      const pathFinder = new PathFinder(map1);
       expect(pathFinder.solveFromStartPoint(0, 0)).toEqual({
         size: 1,
         path: [0, 0],
@@ -177,18 +174,8 @@ describe('PathFinder', () => {
       });
     });
 
-    test('Should find path of size 1', () => {
-      const map = new Map(
-        [
-          9, 8, 7, 6,
-          5, 2, 1, 4,
-          6, 8, 2, 3,
-        ],
-        3,
-        4,
-      );
-
-      const pathFinder = new PathFinder(map);
+    test('Should find path of size 1 for map2 at (1, 2)', () => {
+      const pathFinder = new PathFinder(map2);
       expect(pathFinder.solveFromStartPoint(1, 2)).toEqual({
         size: 1,
         path: [1, 2],
@@ -197,18 +184,8 @@ describe('PathFinder', () => {
       });
     });
 
-    test('Should find path of size 2', () => {
-      const map = new Map(
-        [
-          9, 8, 7, 6,
-          5, 2, 1, 4,
-          6, 8, 2, 3,
-        ],
-        3,
-        4,
-      );
-
-      const pathFinder = new PathFinder(map);
+    test('Should find path of size 2 for map2 at (1, 1)', () => {
+      const pathFinder = new PathFinder(map2);
       expect(pathFinder.solveFromStartPoint(1, 1)).toEqual({
         size: 2,
         path: [
@@ -220,19 +197,8 @@ describe('PathFinder', () => {
       });
     });
 
-    test('Should find path 8-5-3-2-1 in example', () => {
-      const map = new Map(
-        [
-          4, 8, 7, 3,
-          2, 5, 9, 3,
-          6, 3, 2, 5,
-          4, 4, 1, 6,
-        ],
-        4,
-        4,
-      );
-
-      const pathFinder = new PathFinder(map);
+    test('Should find path 8-5-3-2-1 in example at (0, 1)', () => {
+      const pathFinder = new PathFinder(mapExample);
       expect(pathFinder.solveFromStartPoint(0, 1)).toEqual({
         size: 5,
         path: [
@@ -247,19 +213,8 @@ describe('PathFinder', () => {
       });
     });
 
-    test('Should find path 9-5-3-2-1 in example', () => {
-      const map = new Map(
-        [
-          4, 8, 7, 3,
-          2, 5, 9, 3,
-          6, 3, 2, 5,
-          4, 4, 1, 6,
-        ],
-        4,
-        4,
-      );
-
-      const pathFinder = new PathFinder(map);
+    test('Should find path 9-5-3-2-1 in example at (1, 2)', () => {
+      const pathFinder = new PathFinder(mapExample);
       expect(pathFinder.solveFromStartPoint(1, 2)).toEqual({
         size: 5,
         path: [
@@ -277,18 +232,7 @@ describe('PathFinder', () => {
 
   describe('.solve', () => {
     test('Should solve example', () => {
-      const map = new Map(
-        [
-          4, 8, 7, 3,
-          2, 5, 9, 3,
-          6, 3, 2, 5,
-          4, 4, 1, 6,
-        ],
-        4,
-        4,
-      );
-
-      const pathFinder = new PathFinder(map);
+      const pathFinder = new PathFinder(mapExample);
 
       expect(pathFinder.solve()).toEqual({
         size: 5,
@@ -305,19 +249,7 @@ describe('PathFinder', () => {
     });
 
     test('Should maximize dropping', () => {
-      const map = new Map(
-        [
-          8, 7, 6, 5, 4, 1,
-          8, 8, 7, 6, 5, 7,
-          9, 8, 7, 6, 5, 1,
-          8, 8, 7, 6, 5, 7,
-          8, 7, 6, 5, 4, 1,
-        ],
-        5,
-        6,
-      );
-
-      const pathFinder = new PathFinder(map);
+      const pathFinder = new PathFinder(map3);
 
       expect(pathFinder.solve()).toEqual({
         size: 6,
