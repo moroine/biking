@@ -231,6 +231,36 @@ describe('PathFinder', () => {
   });
 
   describe('.solve', () => {
+    test('Should dataset #01', () => {
+      const pathFinder = new PathFinder(map1);
+
+      expect(pathFinder.solve()).toEqual({
+        size: 1,
+        path: [0, 0],
+        endElevation: 5,
+        startElevation: 5,
+      });
+    });
+
+    test('Should dataset #02', () => {
+      const pathFinder = new PathFinder(map2);
+
+      expect(pathFinder.solve()).toEqual({
+        size: 8,
+        path: [
+          0, 0,
+          0, 1,
+          0, 2,
+          0, 3,
+          1, 3,
+          2, 3,
+          2, 2,
+          1, 2,
+        ],
+        endElevation: 1,
+        startElevation: 9,
+      });
+    });
     test('Should solve example', () => {
       const pathFinder = new PathFinder(mapExample);
 
@@ -248,7 +278,7 @@ describe('PathFinder', () => {
       });
     });
 
-    test('Should maximize dropping', () => {
+    test('Should dataset #03', () => {
       const pathFinder = new PathFinder(map3);
 
       expect(pathFinder.solve()).toEqual({
