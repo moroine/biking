@@ -18,7 +18,10 @@ class PathFinder {
       return false;
     }
 
-    return candidate.endElevation < current.endElevation;
+    const candidateDrop = candidate.endElevation - candidate.startElevation;
+    const currentDrop = current.endElevation - current.startElevation;
+
+    return candidateDrop < currentDrop;
   }
 
   getElevation(row, column) {
@@ -73,6 +76,7 @@ class PathFinder {
       path: [row, column],
       size: 1,
       endElevation: current,
+      startElevation: current,
     };
 
     if (bestSubPath !== null) {

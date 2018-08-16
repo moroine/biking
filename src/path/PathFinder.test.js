@@ -103,14 +103,17 @@ describe('PathFinder', () => {
             2, 4,
           ],
           endElevation: 5,
+          startElevation: 10,
         },
         {
           size: 3,
           path: [
             1, 1,
             1, 2,
+            1, 3,
           ],
           endElevation: 2,
+          startElevation: 10,
         },
       )).toBe(true);
     });
@@ -125,6 +128,7 @@ describe('PathFinder', () => {
             2, 4,
           ],
           endElevation: 5,
+          startElevation: 10,
         },
         {
           size: 3,
@@ -133,8 +137,59 @@ describe('PathFinder', () => {
             1, 2,
           ],
           endElevation: 9,
+          startElevation: 10,
         },
       )).toBe(false);
+    });
+
+    test('Should be false if current has better dropping', () => {
+      expect(PathFinder.isBetterSubPath(
+        {
+          size: 3,
+          path: [
+            3, 1,
+            4, 1,
+            2, 4,
+          ],
+          endElevation: 5,
+          startElevation: 15,
+        },
+        {
+          size: 3,
+          path: [
+            1, 1,
+            1, 2,
+            1, 3,
+          ],
+          endElevation: 2,
+          startElevation: 3,
+        },
+      )).toBe(false);
+    });
+
+    test('Should be true if candidate has better dropping', () => {
+      expect(PathFinder.isBetterSubPath(
+        {
+          size: 3,
+          path: [
+            1, 1,
+            1, 2,
+            1, 3,
+          ],
+          endElevation: 2,
+          startElevation: 3,
+        },
+        {
+          size: 3,
+          path: [
+            3, 1,
+            4, 1,
+            2, 4,
+          ],
+          endElevation: 5,
+          startElevation: 15,
+        },
+      )).toBe(true);
     });
   });
 
@@ -146,12 +201,12 @@ describe('PathFinder', () => {
       const rows = 1;
       const cols = 1;
 
-
       const pathFinder = new PathFinder(map, rows, cols);
       expect(pathFinder.solveFromStartPoint(0, 0)).toEqual({
         size: 1,
         path: [0, 0],
         endElevation: 5,
+        startElevation: 5,
       });
     });
 
@@ -169,6 +224,7 @@ describe('PathFinder', () => {
         size: 1,
         path: [1, 2],
         endElevation: 1,
+        startElevation: 1,
       });
     });
 
@@ -189,6 +245,7 @@ describe('PathFinder', () => {
           1, 2,
         ],
         endElevation: 1,
+        startElevation: 2,
       });
     });
 
@@ -213,6 +270,7 @@ describe('PathFinder', () => {
           3, 2,
         ],
         endElevation: 1,
+        startElevation: 8,
       });
     });
 
@@ -237,6 +295,7 @@ describe('PathFinder', () => {
           3, 2,
         ],
         endElevation: 1,
+        startElevation: 9,
       });
     });
   });
@@ -257,13 +316,42 @@ describe('PathFinder', () => {
       expect(pathFinder.solve()).toEqual({
         size: 5,
         path: [
-          0, 1,
+          1, 2,
           1, 1,
           2, 1,
           2, 2,
           3, 2,
         ],
         endElevation: 1,
+        startElevation: 9,
+      });
+    });
+
+    test('Should maximize dropping', () => {
+      const map = [
+        8, 7, 6, 5, 4, 1,
+        8, 8, 7, 6, 5, 7,
+        9, 8, 7, 6, 5, 1,
+        8, 8, 7, 6, 5, 7,
+        8, 7, 6, 5, 4, 1,
+      ];
+      const rows = 5;
+      const cols = 6;
+
+      const pathFinder = new PathFinder(map, rows, cols);
+
+      expect(pathFinder.solve()).toEqual({
+        size: 6,
+        path: [
+          2, 0,
+          2, 1,
+          2, 2,
+          2, 3,
+          2, 4,
+          2, 5,
+        ],
+        endElevation: 1,
+        startElevation: 9,
       });
     });
   });
