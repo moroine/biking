@@ -1,8 +1,6 @@
 class PathFinder {
-  constructor(map, rows, cols) {
+  constructor(map) {
     this.map = map;
-    this.rows = rows;
-    this.cols = cols;
   }
 
   static isBetterSubPath(current, candidate) {
@@ -24,23 +22,13 @@ class PathFinder {
     return candidateDrop < currentDrop;
   }
 
-  getElevation(row, column) {
-    if (row >= this.rows || row < 0) {
-      return Infinity;
-    }
-    if (column >= this.cols || column < 0) {
-      return Infinity;
-    }
-    return this.map[row * this.cols + column];
-  }
-
   solveFromStartPoint(row, column) {
-    const current = this.getElevation(row, column);
+    const current = this.map.getElevation(row, column);
 
-    const topElevation = this.getElevation(row - 1, column);
-    const leftElevation = this.getElevation(row, column - 1);
-    const bottomElevation = this.getElevation(row + 1, column);
-    const rightElevation = this.getElevation(row, column + 1);
+    const topElevation = this.map.getElevation(row - 1, column);
+    const leftElevation = this.map.getElevation(row, column - 1);
+    const bottomElevation = this.map.getElevation(row + 1, column);
+    const rightElevation = this.map.getElevation(row, column + 1);
 
     let bestSubPath = null;
     if (topElevation < current) {
@@ -91,8 +79,8 @@ class PathFinder {
   solve() {
     let result = null;
 
-    for (let i = 0; i < this.rows; i += 1) {
-      for (let j = 0; j < this.cols; j += 1) {
+    for (let i = 0; i < this.map.rows; i += 1) {
+      for (let j = 0; j < this.map.cols; j += 1) {
         const candidate = this.solveFromStartPoint(i, j);
 
         if (this.constructor.isBetterSubPath(result, candidate)) {
