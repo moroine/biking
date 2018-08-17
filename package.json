@@ -19,7 +19,7 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint .",
-    "solve": "node ./src/index.js solve",
+    "solve": "NODE_ENV=production node ./src/index.js solve",
     "test:ci": "jest --ci --coverage --coverageReporters=text-lcov | coveralls"
   },
   "bin": {

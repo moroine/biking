@@ -1,4 +1,4 @@
-class Map {
+class MapModel {
   constructor(data, rows, cols) {
     this.data = data;
     this.rows = rows;
@@ -16,4 +16,4 @@ class Map {
   }
 }
 
-module.exports = Map;
+module.exports = MapModel;

@@ -1,5 +1,5 @@
 const PathFinder = require('./PathFinder');
-const Map = require('../model/Map');
+const MapModel = require('../model/MapModel');
 
 const map1 = require('../../fixtures/dataset_01/Map');
 const map2 = require('../../fixtures/dataset_02/Map');
@@ -9,7 +9,7 @@ const mapExample = require('../../fixtures/example/Map');
 describe('PathFinder', () => {
   describe('constructor', () => {
     test('Should set map', () => {
-      const map = new Map();
+      const map = new MapModel();
 
       const pathFinder = new PathFinder(map);
 
