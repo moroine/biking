@@ -1,95 +1,100 @@
+const Result = require('../model/Result');
+
 class PathFinder {
   constructor(map) {
     this.map = map;
+
+    this.cache = new Map();
+
+    this.solutionBestResult = null;
   }
 
-  static isBetterSubPath(current, candidate) {
-    if (current === null) {
-      return true;
-    }
-
-    if (candidate.size > current.size) {
-      return true;
-    }
-
-    if (candidate.size < current.size) {
-      return false;
-    }
-
-    const candidateDrop = candidate.endElevation - candidate.startElevation;
-    const currentDrop = current.endElevation - current.startElevation;
-
-    return candidateDrop < currentDrop;
-  }
-
-  solveFromStartPoint(row, column) {
+  solveFromStartPoint(row, column, parentElevation = null, parentSize = 0) {
     const current = this.map.getElevation(row, column);
 
-    const topElevation = this.map.getElevation(row - 1, column);
-    const leftElevation = this.map.getElevation(row, column - 1);
-    const bottomElevation = this.map.getElevation(row + 1, column);
-    const rightElevation = this.map.getElevation(row, column + 1);
-
-    let bestSubPath = null;
-    if (topElevation < current) {
-      const top = this.solveFromStartPoint(row - 1, column);
-
-      if (this.constructor.isBetterSubPath(bestSubPath, top)) {
-        bestSubPath = top;
-      }
-    }
-    if (leftElevation < current) {
-      const left = this.solveFromStartPoint(row, column - 1);
-
-      if (this.constructor.isBetterSubPath(bestSubPath, left)) {
-        bestSubPath = left;
-      }
-    }
-    if (bottomElevation < current) {
-      const bottom = this.solveFromStartPoint(row + 1, column);
-
-      if (this.constructor.isBetterSubPath(bestSubPath, bottom)) {
-        bestSubPath = bottom;
-      }
-    }
-    if (rightElevation < current) {
-      const right = this.solveFromStartPoint(row, column + 1);
-
-      if (this.constructor.isBetterSubPath(bestSubPath, right)) {
-        bestSubPath = right;
-      }
+    if (parentElevation !== null && current >= parentElevation) {
+      return null;
     }
 
-    const result = {
-      path: [row, column],
-      size: 1,
-      endElevation: current,
-      startElevation: current,
-    };
+    // The best size we can achieve on this solution
+    // considering the best overall solution and than elevation cannot be bellow 0
+    const selfSizeLimit = parentSize + current + 1;
+    if (this.solutionBestResult !== null && this.solutionBestResult.size > selfSizeLimit + 1) {
+      return null;
+    }
 
-    if (bestSubPath !== null) {
-      result.size += bestSubPath.size;
-      result.path.push(...bestSubPath.path);
-      result.endElevation = bestSubPath.endElevation;
+    const cacheResult = this.getCacheResult(row, column);
+
+    if (cacheResult !== null) {
+      return cacheResult;
+    }
+
+    const result = new Result(row, column, current);
+    let bestSubResult = null;
+
+    const topResult = this.solveFromStartPoint(row - 1, column, current, parentSize + 1);
+    if (Result.isBetterResult(bestSubResult, topResult)) {
+      bestSubResult = topResult;
+    }
+
+    const bottomResult = this.solveFromStartPoint(row + 1, column, current, parentSize + 1);
+    if (Result.isBetterResult(bestSubResult, bottomResult)) {
+      bestSubResult = bottomResult;
+    }
+
+    const leftResult = this.solveFromStartPoint(row, column - 1, current, parentSize + 1);
+    if (Result.isBetterResult(bestSubResult, leftResult)) {
+      bestSubResult = leftResult;
+    }
+
+    const rightResult = this.solveFromStartPoint(row, column + 1, current, parentSize + 1);
+    if (Result.isBetterResult(bestSubResult, rightResult)) {
+      bestSubResult = rightResult;
+    }
+
+    result.addSubResult(bestSubResult);
+
+    return this.cacheResult(row, column, result);
+  }
+
+  cacheResult(row, column, result) {
+    if (!this.cache.has(row)) {
+      this.cache.set(row, new Map());
+    }
+
+    const rowCache = this.cache.get(row);
+    if (!rowCache.has(column)) {
+      rowCache.set(column, result);
     }
 
     return result;
   }
 
-  solve() {
-    let result = null;
+  getCacheResult(row, column) {
+    if (!this.cache.has(row)) {
+      return null;
+    }
 
+    const rowCache = this.cache.get(row);
+    if (!rowCache.has(column)) {
+      return null;
+    }
+
+    return rowCache.get(column);
+  }
+
+  solve() {
     for (let i = 0; i < this.map.rows; i += 1) {
       for (let j = 0; j < this.map.cols; j += 1) {
         const candidate = this.solveFromStartPoint(i, j);
 
-        if (this.constructor.isBetterSubPath(result, candidate)) {
-          result = candidate;
+        if (Result.isBetterResult(this.solutionBestResult, candidate)) {
+          this.solutionBestResult = candidate;
         }
       }
     }
 
-    return result;
+    return this.solutionBestResult;
   }
 }
 

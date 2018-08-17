@@ -1,6 +1,6 @@
 /* eslint-disable no-trailing-spaces */
 const { parse, ParseHandler } = require('./parser');
-const MapModel = require('../model/Map');
+const MapModel = require('../model/MapModel');
 
 const map1 = require('../../fixtures/dataset_01/Map');
 const map2 = require('../../fixtures/dataset_02/Map');

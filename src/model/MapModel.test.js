@@ -1,6 +1,6 @@
-const Map = require('./Map');
+const Map = require('./MapModel');
 
-describe('Map', () => {
+describe('MapModel', () => {
   describe('constructor', () => {
     test('Should set data, cols & rows', () => {
       const data = [];
