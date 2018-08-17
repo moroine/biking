@@ -1,5 +1,5 @@
 const fs = require('fs');
-const Map = require('../model/Map');
+const MapModel = require('../model/MapModel');
 
 
 class ParseHandler {
@@ -49,7 +49,7 @@ class ParseHandler {
   getResult() {
     this.data.push(this.rest);
 
-    return new Map(this.data, this.rows, this.cols);
+    return new MapModel(this.data, this.rows, this.cols);
   }
 }
 
