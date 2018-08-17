@@ -8,7 +8,7 @@ module.exports = {
     },
     "overrides": [
         {
-            "files": [ '**/*.test.js' ],
+            "files": [ '**/*.test.js', '__mocks_/**/*.mock.js' ],
             "plugins": ["jest"],
             "env": {
                 "jest": true,

@@ -25,7 +25,12 @@
     "lazy-biking": "./src/index"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ]
   },
   "dependencies": {
     "yargs": "^12.0.1"
