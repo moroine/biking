@@ -1,0 +1,39 @@
+{
+  "name": "lazy-biking",
+  "version": "1.0.0",
+  "description": "Lazy Biking",
+  "main": "src/index.js",
+  "repository": "https://github.com/moroine/biking.git",
+  "author": "moroine <moroine.bentefrit@adactive.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "coveralls": "^3.0.2",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jest": "^21.18.0",
+    "jest": "^23.4.2",
+    "jest-mock-console": "^0.4.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint .",
+    "solve": "node ./src/index.js solve",
+    "test:ci": "jest --ci --coverage --coverageReporters=text-lcov | coveralls"
+  },
+  "bin": {
+    "lazy-biking": "./src/index"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ]
+  },
+  "dependencies": {
+    "yargs": "^12.0.1"
+  }
+}
