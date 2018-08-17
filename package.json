@@ -1,5 +1,5 @@
 {
-  "name": "abiking",
+  "name": "lazy-biking",
   "version": "1.0.0",
   "description": "Lazy Biking",
   "main": "src/index.js",
@@ -21,8 +21,18 @@
     "lint": "eslint .",
     "test:ci": "jest --ci --coverage --coverageReporters=text-lcov | coveralls"
   },
-  "jest": {
-    "testEnvironment": "node"
+  "bin": {
+    "lazy-biking": "./src/index"
   },
-  "dependencies": {}
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ]
+  },
+  "dependencies": {
+    "yargs": "^12.0.1"
+  }
 }
